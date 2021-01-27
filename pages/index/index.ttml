@@ -1,0 +1,4 @@
+<view class="intro">Welcome to Gadget</view>
+<button bindtap="getUserInfo">WHO AM I</button>
+<button bindtap="login">Login</button>
+<button bindtap="enterProfile">Enter Profile</button>
