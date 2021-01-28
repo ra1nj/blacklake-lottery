@@ -1,4 +1,28 @@
-<view class="intro">Welcome to Gadget</view>
-<button bindtap="getUserInfo">WHO AM I</button>
-<button bindtap="login">Login</button>
-<button bindtap="enterProfile">Enter Profile</button>
+<view class="background" tt:if="{{!!userInfo}}">
+    <view class="userinfo">
+        <view class="flex-box">
+        <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
+        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+        </view>
+        <text class="ticketinfo">剩余筹码: {{remainTicketAmount}}</text>
+    </view>
+   <scroll-view class="prize-list">
+         
+        <view tt:for="{{itemList}}" class="prize-box">
+            <image class="prize-img" src="{{item.imgurl}}"></image>
+            <view class="prize-info">
+                <text>奖品名称：{{item.name}}</text>
+                <text>当前总注额：{{item.totalBet}}</text>
+                <view class="bet-box">
+                    <button disabled="{{remainTicketAmount == 0}}" size='mini' bindtap="bet" data-bet="{{item}}" >下注</button>
+                    <text tt:if="{{betList[item.id]>0}}" class="bet-info">已下 {{betList[item.id]}}</text>
+                </view>
+            </view>
+        </view>
+
+   </scroll-view>
+    <view>
+        <button bindtap='clearBet'>重置下注</button>
+        <button>提交下注</button>
+    </view>
+</view>

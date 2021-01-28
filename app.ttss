@@ -1,0 +1,11 @@
+.flex-box {
+    display: flex;
+    align-items: center;
+}
+.background{
+    padding:20rpx;
+    background-color: black;
+}
+text{
+    color: white;
+}
