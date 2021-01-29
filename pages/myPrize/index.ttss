@@ -1,26 +1,6 @@
-
-.top-image{
-  width: 750rpx;
-  height: 375rpx;
-  /* position: absolute; */
-  /* left: 0;
-  top: 100rpx; */
-}
-.rule-info{
-  margin:auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  top:-120rpx;
-  position: relative;
-  z-index: 100;
-  font-size: 32rpx;
-}
-.coin{
-  width: 50rpx;
-  height: 50rpx;
-  margin-right: 10rpx;
+.intro {
+  margin: 30px;
+  text-align: center;
 }
 .userinfo-avatar {
   border-radius: 50rpx;
@@ -36,13 +16,12 @@
   font-size: 38rpx;
 }
 .userinfo{
-  padding: 20rpx;
   display: flex;
    align-items:center;
    justify-content: space-between;
    /* position: absolute; */
   z-index: 999;
-   /* background-color: black; */
+   background-color: black;
 }
 .ticketinfo{
   align-self: end;
@@ -51,23 +30,10 @@
   display: flex;
   flex-direction: column;
   /* height: 1100rpx; */
-  height: 700rpx;
-  position: relative;
-  top:-100rpx;
 }
 .prize-box{
   display: flex;
-  /* margin:auto; */
-  width: 690rpx;
-  border-radius: 20rpx;
-  height: 686rpx;
-  background: linear-gradient(#FFEFBE,#D5BB6A);
-  padding: 30rpx;
-}
-.fPrize-img{
-  width: 630rpx;
-  height: 300rpx;
-  margin:auto;
+  margin-top: 20rpx;
 }
 .prize-img{
   width: 300rpx;
@@ -81,12 +47,10 @@
 }
 .bet-box{
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   align-self: end;
-  flex:1;
-  margin:auto;
-  width: 100%;
+  /* flex:1; */
 }
 .bet-btn{
   width: 100rpx;
@@ -105,22 +69,20 @@
 
 }
 .bottom-box{
-  position: absolute;
+  /* position: absolute;
   bottom:0;
-  left:0;
-  padding-top: 20rpx;
-  padding-bottom:20rpx;
+  left:0; */
+  padding-top: 10rpx;
+  padding-bottom:10rpx;
   display: flex;
-  justify-content: space-around;
-  background-color: #FFEFBD;
-  width:750rpx;
+  justify-content: space-between;
+  /* width:750rpx; */
 }
 .bottom-btn{
   width: 300rpx;
   
 }
 button{
-  margin-left: 0;
   background-color: yellow;
   color: black;
   font-weight: bold;

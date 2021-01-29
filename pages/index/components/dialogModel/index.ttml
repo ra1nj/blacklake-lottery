@@ -1,0 +1,7 @@
+
+<view class="dialog-model" wx:if="{{isShow}}" catchtouchmove="preventDefault">
+  <view class="dialog-back" bindtap="closeModel"></view>
+  <view class="dialog-cont" >
+    
+  </view>
+</view>

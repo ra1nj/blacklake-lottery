@@ -1,42 +1,61 @@
 <view class="background" tt:if="{{!!userInfo}}">
-    
-   <scroll-view class="prize-list" scroll-y='true'>
-         
-        <view tt:for="{{itemList}}" class="prize-box">
-            <image class="prize-img" src="{{item.imgurl}}"></image>
-            <view class="prize-info">
-                <text>奖品名称：{{item.name}}</text>
-                <text>当前总注额：{{item.totalBet}}</text>
-                <view class="bet-box">
-                    <button disabled="{{remainTicketAmount == 0}}" size='mini' bindtap="bet" data-bet="{{item}}" >下注</button>
-                    <text tt:if="{{betList[item.id]>0}}" class="bet-info">已下 {{betList[item.id]}}</text>
+    <view class="userinfo">
+        <view class="flex-box">
+            <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
+            <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+        </view>
+        <view class='flex-box'>
+            <image class='coin' src="../../assets/img/coin.png"></image>
+            <text class="ticketinfo">x {{remainTicketAmount}}</text>
+        </view>
+    </view>
+    <image class='top-image'src="../../assets/img/bg.png"></image>
+    <view class='rule-info'>
+        <text>2月2日24:00 停止投票</text>
+        <view bindtap='showRule' class='flex-box'>
+            <icon color='white' type="info"></icon>
+            <text style="margin-left:10rpx;text-decoration:underline">抽奖规则</text>
+        </view>
+    </view>
+    <scroll-view class="prize-list" scroll-y='true'>
+        <view tt:for="{{prizes}}"  tt:for-item='prize' class="prize-box">
+            <view >
+            
+            </view>
+            <view tt:for="{{prize.prizeList}}">
+                <image class="fPrize-img" src="{{item.imgurl}}"></image>
+                <view class="prize-info">
+                    <text>奖品名称：{{item.name}}</text>
+                    <!-- <text>当前总注额：{{item.totalBet}}</text> -->
+                    <view class="bet-box">
+                        <button disabled="{{remainTicketAmount == 0}}" size='mini' bindtap="bet" data-bet="{{item}}" >下注</button>
+                        <view tt:if="{{betList[item.id]>0}}" class='flex-box'>
+                            <image class='coin' src="../../assets/img/coin.png"></image>
+                            <text  class="bet-info">x {{betList[item.id]}}</text>
+                        </view>
+                    </view>
                 </view>
-                <button data-item="{{item}}" bindtap="checkDetail">查看详情</button>
             </view>
         </view>
-
-   </scroll-view>
-   <view class="userinfo">
-        <view class="flex-box">
-        <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </scroll-view>
+</view>
+<view  class="bottom-box">
+    <view class="button-primary" bindtap='clearBet'>重置</view>
+    <view class="button" >提交</view>
+</view>
+<dialog-model isShow="{{showDetail}}" codeList="{{results}}" dialogId="{{2}}" bind:closeModel="handleModel" />
+<!-- <view style="display:flex;
+     position:absolute;
+     left:{{left}}rpx;
+     transition-property: all;
+      transition-duration: 1s; 
+      transition-timing-function: linear;"
+       >
+        <view tt:for="{{candidateList}}" >
+            <image class='userinfo-avatar' src="{{userInfo.avatarUrl}}"></image>
         </view>
-        <text class="ticketinfo">剩余筹码: {{remainTicketAmount}}</text>
     </view>
-    <view  class="bottom-box">
-        <button class="bottom-btn" bindtap='clearBet'>重置下注</button>
-        <button class="bottom-btn" >提交下注</button>
-    </view>
-    
-</view>
-<view tt:if="{{showDetail}}" class="modal">
-    <view class='prize-modal'>
-    <text>{{currentItem.name}}正在开奖...</text>
-    <image src="{{currentItem.imgurl}}"></image>
-    <view animation="{{animationData}}">
-    <image class="userinfo-avatar-square" src="{{userInfo.avatarUrl}}"></image>
-    </view>
-    
-    </view>
-    <button bindtap="closeDetail">关闭</button>
-</view>
+    <view style="position:absolute;width:750rpx;height:50rpx;left:0;">
+        <view style="position:absolute;width:350rpx;height:50rpx;left:0;background-color:black;"></view>
+        <view style="position:absolute;width:350rpx;height:50rpx;right:0;background-color:black;"></view>
+    </view> -->

@@ -1,0 +1,174 @@
+.dialog-model {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  font-size: 25rpx;
+  top: 0;
+  left: 0;
+}
+
+.dialog-back {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-cont {
+  width: 560rpx;
+  height: 800rpx;
+  border-radius: 13rpx;
+  background: url(https://qiniu-image.qtshe.com/20190227back-img.png) no-repeat center center;
+  background-size: 100% 100%;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -400rpx;
+  margin-left: -280rpx;
+  z-index: 1000;
+}
+
+.code-result-wrapper {
+  position: relative;
+}
+
+.code-result {
+  width: 463rpx;
+  height: 130rpx;
+  background: #fff;
+  border-radius: 13rpx;
+  margin: 36rpx 47rpx 0 47rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+}
+
+.code-result-wrapper image {
+  position: absolute;
+  width: 130rpx;
+  height: 50rpx;
+  top: 32rpx;
+  left: 38rpx;
+}
+
+.my-code-item {
+  width: 484rpx;
+  height: 80rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+}
+
+.btn-default {
+  width: 295rpx;
+  height: 74rpx;
+  line-height: 80rpx;
+  background: url(https://qiniu-image.qtshe.com/20190227look-btn.png) no-repeat center center;
+  background-size: 100% 100%;
+  margin: auto;
+  margin-top: 20rpx;
+  font-size: 35rpx;
+  font-weight: normal;
+  color: rgba(134, 23, 15, 1);
+}
+
+.dialog-cont .tip-1 {
+  font-size: 26rpx;
+  color: #000;
+  margin-top: 42rpx;
+}
+
+.dialog-cont .tip-2 {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #812d09;
+  margin: 24rpx 0 0rpx;
+}
+
+.default-01 .tip-2 {
+  margin-bottom: -10rpx;
+}
+
+.dialog-cont .tip-3 {
+  color: #000;
+  font-size: 30rpx;
+  width: 100%;
+  text-align: center;
+  margin-top: 44rpx;
+  font-weight: bold;
+}
+
+.dialog-cont .tip-4 {
+  width: 100%;
+  color: #000;
+  font-size: 24rpx;
+  text-align: center;
+  margin-top: 16rpx;
+}
+
+.dialog-cont .tip-5 {
+  width:90%;
+  position:absolute;
+  bottom:33rpx;
+  color:#000;
+  font-size:20rpx;
+  border-radius:12px;
+  background:rgba(255,255,255,0.8);
+  height:44rpx;
+  line-height:44rpx;
+  margin-left:5%;
+
+}
+
+.dialog-cont .tip-6 {
+  width: 100%;
+  margin-top: 25rpx;
+  color: #000;
+  font-size: 20rpx;
+}
+
+.default-02 .my-code-item, .default-03 .my-code-item {
+  margin-top: 28rpx;
+}
+
+.default-02 .btn-default {
+  margin-top: 65rpx;
+}
+
+.egg {
+  height: 140rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.egg .tip-3, .egg .tip-4 {
+  margin-top: 0;
+}
+
+.egg image {
+  width: 58rpx;
+  height: 48rpx;
+  position: absolute;
+  top: 28rpx;
+  left: 124rpx;
+}
+
+.default-03 .btn-default {
+  margin-top: -8rpx;
+}
+
+.default-03 .tip-3 {
+  text-indent: 44rpx;
+}

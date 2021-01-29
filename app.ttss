@@ -3,11 +3,32 @@
     align-items: center;
 }
 .background{
-    /* width: 100%; */
-    /* height: 100%; */
-    padding:20rpx;
-    background-color: black;
+    /* padding:20rpx; */
+}
+.button{
+    background-color: #FF3E3E;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 300rpx;
+    height: 80rpx;
+    border-radius: 10rpx;
+    color: white;
+}
+.button-primary{
+    width: 300rpx;
+    height: 80rpx;
+    border-radius: 10rpx;
+    color: #FF3E3E;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-color: #FF3E3E;
+    border:1px solid;
 }
 text{
     color: white;
+}
+body{
+    background-color:#FF3E3E;
 }
