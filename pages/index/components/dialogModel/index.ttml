@@ -1,7 +1,17 @@
-
 <view class="dialog-model" wx:if="{{isShow}}" catchtouchmove="preventDefault">
-  <view class="dialog-back" bindtap="closeModel"></view>
-  <view class="dialog-cont" >
-    
-  </view>
+    <view class="dialog-back" bindtap="closeModel"></view>
+    <view class="dialog-cont" >
+      <text class='title'> {{currentItem.rewardName}}</text>
+      <image class="img" src="{{currentItem.picture}}"></image>
+        <view class='result-box'>
+            <view style="display:flex; position:absolute;left:{{left}}rpx;transition-property: all;transition-duration: 1s; transition-timing-function: linear;">
+                <block tt:for="{{round}}">
+                    <view tt:for="{{currentItem.candidateList}}" >
+                        <image class='userinfo-avatar' src="{{item.avatarUrl}}"></image>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <text class='tip'>{{tip}}</text>
+    </view>
 </view>

@@ -21,6 +21,7 @@
   width: 50rpx;
   height: 50rpx;
   margin-right: 10rpx;
+  margin-left: 10rpx;
 }
 .userinfo-avatar {
   border-radius: 50rpx;
@@ -51,18 +52,39 @@
   display: flex;
   flex-direction: column;
   /* height: 1100rpx; */
-  height: 700rpx;
+  /* height: 700rpx; */
   position: relative;
   top:-100rpx;
 }
 .prize-box{
   display: flex;
-  /* margin:auto; */
-  width: 690rpx;
+  flex-direction: column;
+  margin-top: 20rpx;
+  margin-left:auto;
+  margin-right:auto;
+  width: 640rpx;
   border-radius: 20rpx;
-  height: 686rpx;
+  /* height: 686rpx; */
   background: linear-gradient(#FFEFBE,#D5BB6A);
   padding: 30rpx;
+}
+.prize-inner-box{
+  height: 640rpx ;
+}
+.prize-title{
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 64rpx;
+  color: #FF3E3E;
+
+}
+.fPrize-flower{
+  width: 284rpx;
+  height: 195rpx;
+  position: absolute;
+  left: 0;
+  top:-80rpx;
+  z-index: 999;
 }
 .fPrize-img{
   width: 630rpx;
@@ -71,8 +93,19 @@
 }
 .prize-img{
   width: 300rpx;
-  height: 360rpx;
-  margin-right: 20rpx;
+  height: 300rpx;
+}
+.prize-name{
+  color:white;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  overflow:hidden; 
+text-overflow:ellipsis; 
+white-space:nowrap; 
+}
+.prize-totalBet{
+  color:#FF3E3E;
+  size: 28rpx;
 }
 .prize-info{
   display: flex;
@@ -81,12 +114,10 @@
 }
 .bet-box{
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  align-self: end;
   flex:1;
-  margin:auto;
-  width: 100%;
+  margin-top: 50rpx;;
 }
 .bet-btn{
   width: 100rpx;
@@ -105,7 +136,7 @@
 
 }
 .bottom-box{
-  position: absolute;
+  /* position: absolute; */
   bottom:0;
   left:0;
   padding-top: 20rpx;
@@ -147,4 +178,16 @@ button{
   align-items: center;
   justify-content: center;
   background-color: rgba(0,0,0,0.92);
+}
+.openprize-btn{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FF3E3E;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
 }

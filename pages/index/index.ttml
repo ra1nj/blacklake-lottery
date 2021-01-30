@@ -6,7 +6,7 @@
         </view>
         <view class='flex-box'>
             <image class='coin' src="../../assets/img/coin.png"></image>
-            <text class="ticketinfo">x {{remainTicketAmount}}</text>
+            <text class="ticketinfo">x {{remainTicketAmount || 0}}</text>
         </view>
     </view>
     <image class='top-image'src="../../assets/img/bg.png"></image>
@@ -19,43 +19,55 @@
     </view>
     <scroll-view class="prize-list" scroll-y='true'>
         <view tt:for="{{prizes}}"  tt:for-item='prize' class="prize-box">
-            <view >
-            
+            <view class='prize-title' >
+                <image tt:if='{{prize.categotyName == 特等奖}}' class='fPrize-flower' src='../../assets/img/flower.png'></image>
+                {{prize.categoryName}}
             </view>
-            <view tt:for="{{prize.prizeList}}">
-                <image class="fPrize-img" src="{{item.imgurl}}"></image>
-                <view class="prize-info">
-                    <text>奖品名称：{{item.name}}</text>
-                    <!-- <text>当前总注额：{{item.totalBet}}</text> -->
-                    <view class="bet-box">
-                        <button disabled="{{remainTicketAmount == 0}}" size='mini' bindtap="bet" data-bet="{{item}}" >下注</button>
-                        <view tt:if="{{betList[item.id]>0}}" class='flex-box'>
-                            <image class='coin' src="../../assets/img/coin.png"></image>
-                            <text  class="bet-info">x {{betList[item.id]}}</text>
+            <view  tt:if='{{prize.categoryName == "特等奖"}}'>
+                <view  tt:for="{{prize.prizeList}}">
+                    <image class="fPrize-img" src="{{item.picture}}"></image>
+                    <view class="prize-info">
+                        <text class="prize-name">{{item.rewardName}}</text>
+                        <text class="prize-totalBet">已下注: {{item.sumTickets}}</text>
+                        <view class="bet-box">
+                            <view  class='flex-box'>
+                                <image class='coin' src="../../assets/img/coin.png"></image>
+                                <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
+                                <view class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
+                            </view>
+                            <view class='button' bindtap="bet" data-bet="{{item}}" >
+                        加注
+                                <image class='coin' src="../../assets/img/coin.png"></image>
+                        x 1
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
+            <swiper  tt:if='{{prize.categoryName != "特等奖"}}' class='prize-inner-box' display-multiple-items='2'>
+                <swiper-item  tt:for="{{prize.prizeList}}">
+                    <image class="prize-img" src="{{item.picture}}"></image>
+                    <view class="prize-info">
+                        <text class="prize-name">{{item.rewardName}}</text>
+                        <text class="prize-totalBet">已下注: {{item.sumTickets}}</text>
+                        <view  class='flex-box'>
+                            <image class='coin' style="margin:10rpx 10rpx 10rpx 0" src="../../assets/img/coin.png"></image>
+                            <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
+                            <view class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
+                        </view>
+                        <view class='button' bindtap="bet" data-bet="{{item}}" >
+                        加注
+                            <image bindtap="bet" data-bet="{{item}}" class='coin' src="../../assets/img/coin.png"></image>
+                        x 1
+                        </view>
+                    </view>
+                </swiper-item>
+            </swiper>
         </view>
     </scroll-view>
 </view>
 <view  class="bottom-box">
     <view class="button-primary" bindtap='clearBet'>重置</view>
-    <view class="button" >提交</view>
+    <view class="button" bindtap='submit'>提交</view>
 </view>
-<dialog-model isShow="{{showDetail}}" codeList="{{results}}" dialogId="{{2}}" bind:closeModel="handleModel" />
-<!-- <view style="display:flex;
-     position:absolute;
-     left:{{left}}rpx;
-     transition-property: all;
-      transition-duration: 1s; 
-      transition-timing-function: linear;"
-       >
-        <view tt:for="{{candidateList}}" >
-            <image class='userinfo-avatar' src="{{userInfo.avatarUrl}}"></image>
-        </view>
-    </view>
-    <view style="position:absolute;width:750rpx;height:50rpx;left:0;">
-        <view style="position:absolute;width:350rpx;height:50rpx;left:0;background-color:black;"></view>
-        <view style="position:absolute;width:350rpx;height:50rpx;right:0;background-color:black;"></view>
-    </view> -->
+<dialog-model isShow="{{showDetail}}" currentItem="{{currentItem}}" bind:closeModel="handleModel" />
