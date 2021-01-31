@@ -181,9 +181,9 @@ button{
   background-color: rgba(0,0,0,0.92);
 }
 .openprize-btn{
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 100rpx;
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50rpx;
   display: flex;
   align-items: center;
   justify-content: center;

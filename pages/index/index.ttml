@@ -35,16 +35,14 @@
                                 <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
                                 <view class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
                             </view>
-                            <view class='button' bindtap="bet" data-bet="{{item}}" >
-                        加注
-                                <image class='coin' src="../../assets/img/coin.png"></image>
-                        x 1
+                            <view tt:if="{{isOver != true}}" class='button' bindtap="bet" data-bet="{{item}}" >
+                            加注
                             </view>
                         </view>
                     </view>
                 </view>
             </view>
-            <swiper  tt:if='{{prize.categoryName != "特等奖"}}' class='prize-inner-box' display-multiple-items='2'>
+            <swiper autoplay="true" tt:if='{{prize.categoryName != "特等奖"}}' class='prize-inner-box' display-multiple-items='2'>
                 <swiper-item  tt:for="{{prize.prizeList}}">
                     <image class="prize-img" src="{{item.picture}}"></image>
                     <view class="prize-info">
@@ -55,10 +53,8 @@
                             <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
                             <view class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
                         </view>
-                        <view class='button' bindtap="bet" data-bet="{{item}}" >
+                        <view tt:if="{{isOver != true}}" class='button' bindtap="bet" data-bet="{{item}}" >
                         加注
-                            <image bindtap="bet" data-bet="{{item}}" class='coin' src="../../assets/img/coin.png"></image>
-                        x 1
                         </view>
                     </view>
                 </swiper-item>
@@ -66,7 +62,7 @@
         </view>
     </scroll-view>
 </view>
-<view  class="bottom-box">
+<view tt:if="{{isOver != true}}" class="bottom-box">
     <view class="button-primary" bindtap='clearBet'>重置</view>
     <view class="button" bindtap='submit'>提交</view>
 </view>

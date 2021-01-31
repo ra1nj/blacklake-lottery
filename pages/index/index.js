@@ -29,6 +29,8 @@ function hideLoading() {
   });
 }
 
+var pollingTimer
+
 Page({
   onPullDownRefresh() {
     this.getPrizeList()
@@ -98,7 +100,7 @@ Page({
           title: '重置成功',
         })
         that.getUserBetInfo()
-
+        that.getPrizeList()
       },
       fail(res) {
         console.log(`重置 调用失败`);
@@ -158,7 +160,7 @@ Page({
       success(res) {
         console.log(`开奖 调用成功 ${res}`);
         let winnerList = res.data.data
-        
+
         hideLoading()
       },
       fail(res) {
@@ -342,7 +344,7 @@ Page({
   },
   onLoad: function () {
     let currentTime = Number(new Date())
-    let expireTime = Number(new Date('2021.1.31'))
+    let expireTime = Number(new Date('2021.2.1'))
     if (currentTime >= expireTime) {
       tt.showModal({
         title: '已结束！',
