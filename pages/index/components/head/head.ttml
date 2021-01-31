@@ -1,0 +1,3 @@
+<template name="head">
+  <image class='top-image'src="../../../assets/img/bg.png"></image>
+</template>

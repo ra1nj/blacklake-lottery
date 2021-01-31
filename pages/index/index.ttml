@@ -1,7 +1,7 @@
 <view class="background" tt:if="{{!!userInfo}}">
     <view class="userinfo">
-        <view class="flex-box">
-            <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
+        <view bindlongpress='clearStorage' class="flex-box">
+            <image  class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
             <text class="userinfo-nickname">{{userInfo.nickName}}</text>
         </view>
         <view class='flex-box'>
@@ -17,7 +17,7 @@
             <text style="margin-left:10rpx;text-decoration:underline">抽奖规则</text>
         </view>
     </view>
-    <scroll-view class="prize-list" scroll-y='true'>
+    <scroll-view  class="prize-list" scroll-y='true'>
         <view tt:for="{{prizes}}"  tt:for-item='prize' class="prize-box">
             <view class='prize-title' >
                 <image tt:if='{{prize.categotyName == 特等奖}}' class='fPrize-flower' src='../../assets/img/flower.png'></image>
@@ -70,4 +70,4 @@
     <view class="button-primary" bindtap='clearBet'>重置</view>
     <view class="button" bindtap='submit'>提交</view>
 </view>
-<dialog-model isShow="{{showDetail}}" currentItem="{{currentItem}}" bind:closeModel="handleModel" />
+<dialog-model winnerList="{{winnerList}}" isShow="{{showDetail}}" currentItem="{{currentItem}}" bind:closeModel="handleModel" />

@@ -1,0 +1,7 @@
+.top-image{
+    width: 750rpx;
+    height: 375rpx;
+    /* position: absolute; */
+    /* left: 0;
+    top: 100rpx; */
+  }

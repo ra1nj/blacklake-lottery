@@ -12,24 +12,27 @@ function groupBy(list, name) {
   }, {})
 }
 
-function loading(){
+function loading() {
   tt.showLoading({
     title: '请求中...请稍后',
-    mask:true,
+    mask: true,
   });
 }
-function hideLoading(){
+function hideLoading() {
   tt.hideLoading({
-    success (res) {
-      console.log(`res`);
+    success(res) {
+
     },
-    fail (res) {
+    fail(res) {
       console.log(`hideLoading failure`);
     }
   });
 }
 
 Page({
+  onPullDownRefresh() {
+    this.getPrizeList()
+  },
   data: {
     userInfo: undefined,
     remainTicketAmount: 11,
@@ -37,8 +40,9 @@ Page({
     currentItem: {},
     openingPrize: false,
     showDetail: false,
-    userBetInfo:{},
-    betList:{},
+    userBetInfo: {},
+    betList: {},
+    isOver: false,
   },
   showRule() {
     tt.showModal({
@@ -80,17 +84,21 @@ Page({
     loading()
     tt.request({
       url: `${app.globalData.baseUrl}/lottery/reset`,
-      method:'POST',
+      method: 'POST',
       data: {
-        openId:tt.getStorageSync('open_id')
+        openId: tt.getStorageSync('open_id')
       },
       header: {
         'content-type': 'application/json'
       },
       success(res) {
         console.log(`重置 调用成功 res`);
-        that.getUserBetInfo()
         hideLoading()
+        tt.showToast({
+          title: '重置成功',
+        })
+        that.getUserBetInfo()
+
       },
       fail(res) {
         console.log(`重置 调用失败`);
@@ -101,31 +109,33 @@ Page({
       betList: {},
     })
   },
-  submit(){
+  submit() {
     let voteList = []
-    for(let key in this.data.betList){
+    for (let key in this.data.betList) {
       let value = this.data.betList[key];
       voteList.push({
-        rewardId:key,
-        voteCount:value,
+        rewardId: key,
+        voteCount: value,
       })
     }
     var that = this
     loading()
     tt.request({
       url: `${app.globalData.baseUrl}/lottery/vote`,
-      method:'POST',
+      method: 'POST',
       data: {
-        openId:tt.getStorageSync('open_id'),
-        voteList:voteList,
+        openId: tt.getStorageSync('open_id'),
+        voteList: voteList,
       },
       header: {
         'content-type': 'application/json'
       },
       success(res) {
-        console.log(`提交成功`);
-        that.getUserBetInfo()
         hideLoading()
+        tt.showToast({
+          title: '提交成功',
+        })
+        that.getUserBetInfo()
       },
       fail(res) {
         console.log(`request 调用失败`);
@@ -133,20 +143,22 @@ Page({
       }
     })
   },
-  openPrize(event){
+  openPrize(event) {
     let prize = event.target.dataset['prize']
     loading()
     tt.request({
       url: `${app.globalData.baseUrl}/lottery/lottery`,
-      method:'POST',
+      method: 'POST',
       data: {
-        id:prize.id,
+        id: prize.id,
       },
       header: {
         'content-type': 'application/json'
       },
       success(res) {
         console.log(`开奖 调用成功 ${res}`);
+        let winnerList = res.data.data
+        
         hideLoading()
       },
       fail(res) {
@@ -155,8 +167,8 @@ Page({
       }
     })
     this.setData({
-      currentItem:prize,
-      showDetail:true,
+      currentItem: prize,
+      showDetail: true,
     })
   },
   getPrizeList() {
@@ -171,14 +183,14 @@ Page({
       },
       success(res) {
         // console.log(`request 调用成功 ${JSON.stringify(res)}`);
-        let group = groupBy(res.data.data,'level')
+        let group = groupBy(res.data.data, 'level')
         let covertData = []
-        for(let index in group){
+        for (let index in group) {
           let i = group[index]
-          let categoryName = ['特等奖','一等奖','二等奖','三等奖'][i[0].level]
+          let categoryName = ['特等奖', '一等奖', '二等奖', '三等奖'][i[0].level]
           covertData.push({
-            categoryName:categoryName,
-            prizeList:i,
+            categoryName: categoryName,
+            prizeList: i,
           })
         }
         that.setData({
@@ -192,13 +204,14 @@ Page({
       }
     });
   },
-  getUserBetInfo(){
+  getUserBetInfo() {
     let openId = tt.getStorageSync('open_id')
+    console.log('local openId,', openId)
     var that = this
-    if(!!openId){
+    if (!!openId) {
       tt.request({
         url: `${app.globalData.baseUrl}/lottery/getUserDetail`,
-        method:'POST',
+        method: 'POST',
         data: {
           openId: openId
         },
@@ -207,8 +220,14 @@ Page({
         },
         success(res) {
           console.log(`用户下注信息 调用成功 ${JSON.stringify(res)}`);
+          let userBetInfo = res.data.data;
+          let betList = {}
+          for (let i of userBetInfo.rewardTicketRelDtoList) {
+            betList[i.rewardId] = i.voteCount
+          }
           that.setData({
-            userBetInfo:res.data.data,
+            userBetInfo: userBetInfo,
+            betList: betList,
             remainTicketAmount: res.data.data.allTickets - res.data.data.usedTickets
           })
         },
@@ -220,8 +239,8 @@ Page({
           })
         }
       })
-    }else{
-      this.initUser()
+    } else {
+      this.login()
     }
   },
   getUserInfo: function () {
@@ -286,7 +305,7 @@ Page({
                 let userInfo = ures.userInfo
                 tt.request({
                   url: `${app.globalData.baseUrl}/lottery/initUser`,
-                  method:'POST',
+                  method: 'POST',
                   data: {
                     name: userInfo.nickName,
                     headPictureUrl: userInfo.avatarUrl,
@@ -322,6 +341,19 @@ Page({
 
   },
   onLoad: function () {
+    let currentTime = Number(new Date())
+    let expireTime = Number(new Date('2021.1.31'))
+    if (currentTime >= expireTime) {
+      tt.showModal({
+        title: '已结束！',
+        content: '2月3日年会现场将进行每个奖品的开奖，公示中奖名单，中奖几率取决于你的投票数',
+      })
+      this.setData({
+        isOver: true,
+      })
+      // return 
+    }
+
     var that = this
     tt.checkSession({
       success(res) {
@@ -335,7 +367,10 @@ Page({
     })
     this.getPrizeList()
     this.getUserBetInfo()
-
+  },
+  reload(){
+    var that = this
+    this.login()
   },
   login() {
     var that = this
@@ -355,5 +390,22 @@ Page({
       icon: 'none',
       duration: 2000,
     })
+  },
+  clearStorage(event) {
+    var that = this
+    if (event.type == 'longpress') {
+      tt.showModal({
+        title: '即将清除缓存',
+        content: '清除你的本地缓存并重载数据',
+        showCancel:false,
+        success(res) {
+          tt.clearStorageSync()
+          that.reload()
+        },
+        fail(res) {
+          console.log(`showModal调用失败`);
+        }
+      })
+    }
   }
 })
