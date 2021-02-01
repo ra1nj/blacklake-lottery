@@ -16,55 +16,68 @@
             <icon color='white' type="info"></icon>
             <text style="margin-left:10rpx;text-decoration:underline">抽奖规则</text>
         </view>
+        <image class='fPrize-flower' src='../../assets/img/flower.png'></image>
     </view>
     <scroll-view  class="prize-list" scroll-y='true'>
         <view tt:for="{{prizes}}"  tt:for-item='prize' class="prize-box">
             <view class='prize-title' >
-                <image tt:if='{{prize.categotyName == 特等奖}}' class='fPrize-flower' src='../../assets/img/flower.png'></image>
-                {{prize.categoryName}} 
-                {{prize.prizeList.length * 2}}名
+                {{prize.categoryName}}
+                <text style='color:#FF3E3E;font-size:50rpx'>{{prize.prizeList.length * 2}}名</text>
             </view>
             <view  tt:if='{{prize.categoryName == "特等奖"}}'>
                 <view  tt:for="{{prize.prizeList}}">
                     <image class="fPrize-img" src="{{item.picture}}"></image>
                     <view class="prize-info">
                         <text class="prize-name">{{item.rewardName}}</text>
-                        <text class="prize-totalBet">已下注: {{item.sumTickets}}</text>
+                        <view class="space-between-box">
+                            <text class="prize-totalBet">已下注: {{item.sumTickets}}</text>
+                            <view tt:if="{{isHost &&  item.rewardStatus != 'DRAW'}}" class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
+                        </view>
                         <view class="bet-box">
                             <view  class='flex-box'>
                                 <image class='coin' src="../../assets/img/coin.png"></image>
                                 <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
-                                <view class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
                             </view>
-                            <view tt:if="{{isOver != true}}" class='button' bindtap="bet" data-bet="{{item}}" >
+                            <view tt:if="{{isOver != true && item.rewardStatus != 'DRAW'}}" class='button' bindtap="bet" data-bet="{{item}}" >
                             加注
+                            </view>
+                            <view tt:if="{{item.rewardStatus == 'DRAW'}}" class='button' bindtap="checkDetail" data-prize="{{item}}">
+                                已开奖 去看看
                             </view>
                         </view>
                     </view>
                 </view>
             </view>
-            <swiper autoplay="true" tt:if='{{prize.categoryName != "特等奖"}}' class='prize-inner-box' display-multiple-items='2'>
+            <swiper autoplay="true"  tt:if='{{prize.categoryName != "特等奖"}}' class='swiper-box' display-multiple-items='2'>
                 <swiper-item  tt:for="{{prize.prizeList}}">
-                    <image class="prize-img" src="{{item.picture}}"></image>
-                    <view class="prize-info">
-                        <text class="prize-name">{{item.rewardName}}</text>
-                        <text class="prize-totalBet">已下注: {{item.sumTickets}}</text>
-                        <view  class='flex-box'>
-                            <image class='coin' style="margin:10rpx 10rpx 10rpx 0" src="../../assets/img/coin.png"></image>
-                            <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
-                            <view class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
-                        </view>
-                        <view tt:if="{{isOver != true}}" class='button' bindtap="bet" data-bet="{{item}}" >
+                    <view class="prize-inner-box">
+                        <image class="prize-img" src="{{item.picture}}"></image>
+                        <view class="prize-info">
+                            <text class="prize-name">{{item.rewardName}}</text>
+                            <view>
+                                <view class="space-between-box">
+                                    <text class="prize-totalBet">已下注: {{item.sumTickets}}</text>
+                                    <view tt:if="{{isHost && item.rewardStatus != 'DRAW'}}" class='openprize-btn' bindtap='openPrize' data-prize="{{item}}">开</view>
+                                </view>
+                                <view  class='flex-box'>
+                                    <image class='coin' style="margin:10rpx 10rpx 10rpx 0" src="../../assets/img/coin.png"></image>
+                                    <text  class="bet-info">x {{betList[item.id]? betList[item.id]: 0}}</text>
+                                </view>
+                                <view tt:if="{{isOver != true && item.rewardStatus != 'DRAW'}}" class='button' bindtap="bet" data-bet="{{item}}" >
                         加注
                         </view>
-                    </view>
-                </swiper-item>
-            </swiper>
-        </view>
-    </scroll-view>
-</view>
-<view tt:if="{{isOver != true}}" class="bottom-box">
-    <view class="button-primary" bindtap='clearBet'>重置</view>
-    <view class="button" bindtap='submit'>提交</view>
-</view>
-<dialog-model winnerList="{{winnerList}}" isShow="{{showDetail}}" currentItem="{{currentItem}}" bind:closeModel="handleModel" />
+                                <view tt:if="{{item.rewardStatus == 'DRAW'}}" class='button' bindtap="checkDetail" data-prize="{{item}}">
+                                已开奖 去看看
+                            </view>
+                            </view>
+                        </view>
+                    </swiper-item>
+                </swiper>
+            </view>
+        </scroll-view>
+    </view>
+    <view tt:if="{{isOver != true}}" class="bottom-box">
+        <view class="button-primary" bindtap='clearBet'>重置</view>
+        <view class="button" bindtap='submit'>提交</view>
+    </view>
+    <dialog-model winnerList="{{winnerList}}" isShow="{{showDetail}}" currentItem="{{currentItem}}" bind:closeModel="handleModel" />

@@ -29,6 +29,8 @@
   margin-top: -400rpx;
   margin-left: -280rpx;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -47,7 +49,8 @@
   width: 280rpx;
   height: 130rpx;
   border-radius: 12rpx;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -60,6 +63,8 @@
   height: 300rpx;
   margin-top: 20rpx;
   margin-bottom: 20rpx;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .title{

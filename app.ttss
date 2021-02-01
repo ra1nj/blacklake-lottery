@@ -2,6 +2,12 @@
     display: flex;
     align-items: center;
 }
+.space-between-box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex:1;
+}
 .background{
     /* padding:20rpx; */
 }

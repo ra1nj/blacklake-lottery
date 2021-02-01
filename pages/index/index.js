@@ -1,4 +1,9 @@
 const app = getApp()
+const hosts = ['石岩']
+const expireTime = Number(new Date('2021-02-03T00:00:00'))
+var pollingTimer
+
+
 
 function groupBy(list, name) {
   return list.reduce((obj, item) => {
@@ -29,8 +34,6 @@ function hideLoading() {
   });
 }
 
-var pollingTimer
-
 Page({
   onPullDownRefresh() {
     this.getPrizeList()
@@ -45,6 +48,7 @@ Page({
     userBetInfo: {},
     betList: {},
     isOver: false,
+    isHost: false,
   },
   showRule() {
     tt.showModal({
@@ -55,7 +59,7 @@ Page({
   },
   handleModel() {
     this.setData({
-      showDetail: false
+      showDetail: false,
     })
   },
   bet: function (event) {
@@ -77,9 +81,6 @@ Page({
       remainTicketAmount: this.data.remainTicketAmount - 1,
       betList: betList,
     })
-    const putCoinSound = tt.createInnerAudioContext();
-    putCoinSound.src = '../../assets/sound/putcoin.mp3';
-    putCoinSound.play()
   },
   clearBet: function () {
     var that = this
@@ -138,6 +139,7 @@ Page({
           title: '提交成功',
         })
         that.getUserBetInfo()
+        that.getPrizeList()
       },
       fail(res) {
         console.log(`request 调用失败`);
@@ -145,50 +147,86 @@ Page({
       }
     })
   },
-  openPrize(event) {
+  checkDetail(event) {
     let prize = event.target.dataset['prize']
-    loading()
+    let currentItem = {
+      ...prize,
+      candidateList: prize.rewardTicketRelDtoList,
+      winnerList: prize.winnerDtoList.map(w => ({ name: w.winnerName, headPictureUrl: w.winnerHeadPicture }))
+    }
+    this.setData({
+      currentItem: currentItem,
+      showDetail: true,
+    })
+  },
+  openPrize(event) {
+
+    if (!this.data.isOver) {
+      tt.showModal({
+        title: '警告',
+        content: '还没到开奖时间哦！',
+        showCancel: false,
+      })
+      return
+    }
+    let prize = event.target.dataset['prize']
     var that = this
-    tt.request({
-      url: `${app.globalData.baseUrl}/lottery/lottery`,
-      method: 'POST',
-      data: {
-        id: prize.id,
-      },
-      header: {
-        'content-type': 'application/json'
-      },
+    tt.showModal({
+      title: '即将开奖',
+      content: '确定要进行开奖吗',
       success(res) {
-        console.log(`开奖 调用成功 ${res}`);
-        if(res.data.code == 200){
-          hideLoading()
-          let winnerList = res.data.data[0].userList
-          let candidateList = prize.rewardTicketRelDtoList
-          let currentItem = {
-            ...prize,
-            winnerList:winnerList,
-            candidateList:candidateList,
-          }
-          that.setData({
-            currentItem: currentItem,
-            showDetail: true,
-          })  
-        }else{
-          tt.showToast({
-            title: JSON.stringify(res),
+        if (res.confirm) {
+          loading()
+          tt.request({
+            url: `${app.globalData.baseUrl}/lottery/lottery`,
+            method: 'POST',
+            data: {
+              id: prize.id,
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            success(res) {
+              console.log(`开奖 调用成功 ${res}`);
+              if (res.data.code == 200) {
+                hideLoading()
+                let winnerList = res.data.data[0].userList
+                let candidateList = prize.rewardTicketRelDtoList
+                let currentItem = {
+                  ...prize,
+                  winnerList: winnerList,
+                  candidateList: candidateList,
+                }
+                that.setData({
+                  currentItem: currentItem,
+                  showDetail: true,
+                })
+              } else {
+                tt.showToast({
+                  title: '开奖 失败',
+                  icon: 'none'
+                })
+              }
+
+            },
+            fail(res) {
+              tt.showToast({
+                title: '开奖 调用失败',
+              })
+              hideLoading()
+            }
           })
+        } else if (res.cancel) {
+          console.log('cancel, cold')
+        } else {
+          // what happend?
         }
-       
       },
-      fail(res) {
-        console.log(`开奖 调用失败`);
-        hideLoading()
-      }
     })
   },
   getPrizeList() {
     var that = this
-    loading()
+    // loading()
     let task = tt.request({
       url: `${app.globalData.baseUrl}/lottery/getRewardList`,
       method: 'POST',
@@ -211,11 +249,11 @@ Page({
         that.setData({
           prizes: covertData
         })
-        hideLoading();
+
       },
       fail(res) {
         console.log(`request 调用失败${JSON.stringify(res)}`);
-        hideLoading()
+
       }
     });
   },
@@ -264,7 +302,8 @@ Page({
     console.log('local userinfo', localUserInfo)
     if (!!localUserInfo.nickName) {
       this.setData({
-        userInfo: localUserInfo
+        userInfo: localUserInfo,
+        isHost: hosts.indexOf(localUserInfo.nickName) > -1
       })
     } else {
       tt.getUserInfo({
@@ -272,7 +311,8 @@ Page({
           console.log(res)
           tt.setStorageSync('userInfo', res.userInfo)
           that.setData({
-            userInfo: res.userInfo
+            userInfo: res.userInfo,
+            isHost: hosts.indexOf(res.userInfo.nickName) > -1
           }, () => {
             that.showWelcome()
           })
@@ -290,7 +330,8 @@ Page({
         console.log('获取用户信息成功', ures)
         tt.setStorageSync('userInfo', ures.userInfo)
         that.setData({
-          userInfo: ures.userInfo
+          userInfo: ures.userInfo,
+          isHost: hosts.indexOf(ures.userInfo.nickName) > -1
         }, () => {
           that.showWelcome()
         })
@@ -355,19 +396,21 @@ Page({
     })
 
   },
-  onLoad: function () {
+  checkIsExpired() {
     let currentTime = Number(new Date())
-    let expireTime = Number(new Date('2021.2.1'))
     if (currentTime >= expireTime) {
       tt.showModal({
-        title: '已结束！',
+        title: '投票已结束！',
         content: '2月3日年会现场将进行每个奖品的开奖，公示中奖名单，中奖几率取决于你的投票数',
+        showCancel: false,
       })
       this.setData({
         isOver: true,
       })
-      // return 
     }
+  },
+  onLoad: function () {
+    this.checkIsExpired()
 
     var that = this
     tt.checkSession({
@@ -380,12 +423,35 @@ Page({
         that.login()
       }
     })
-    this.getPrizeList()
     this.getUserBetInfo()
+    this.startPolling()
+    this.playMusic()
   },
-  reload(){
+  playMusic() {
+    const innerAudioContext = tt.createInnerAudioContext();
+    innerAudioContext.autoplay = true;
+    innerAudioContext.src = 'https://public-template.s3.cn-northwest-1.amazonaws.com.cn/bgmusic.mp3';
+    innerAudioContext.loop = true;
+    innerAudioContext.onPlay(() => {
+      console.log('开始播放');
+    });
+    innerAudioContext.onError((error) => {
+      console.log(error)
+    });
+  },
+  onUnload() {
+    clearInterval(pollingTimer)
+  },
+  reload() {
     var that = this
     this.login()
+  },
+  startPolling() {
+    this.getPrizeList()
+    var that = this
+    pollingTimer = setInterval(() => {
+      that.getPrizeList()
+    }, 2000)
   },
   login() {
     var that = this
@@ -412,7 +478,7 @@ Page({
       tt.showModal({
         title: '即将清除缓存',
         content: '清除你的本地缓存并重载数据',
-        showCancel:false,
+        showCancel: false,
         success(res) {
           tt.clearStorageSync()
           that.reload()

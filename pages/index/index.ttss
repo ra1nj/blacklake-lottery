@@ -69,22 +69,28 @@
   background: linear-gradient(#FFEFBE,#D5BB6A);
   padding: 30rpx;
 }
+.swiper-box{
+  height: 700rpx ;
+}
 .prize-inner-box{
-  height: 640rpx ;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  height:100%;
 }
 .prize-title{
   margin-left: auto;
   margin-right: auto;
   font-size: 64rpx;
+  font-weight: bold;
   color: #FF3E3E;
-
 }
 .fPrize-flower{
   width: 284rpx;
   height: 195rpx;
   position: absolute;
   left: 0;
-  top:-80rpx;
+  top:40rpx;
   z-index: 899;
 }
 .fPrize-img{
@@ -97,12 +103,12 @@
   height: 300rpx;
 }
 .prize-name{
-  color:white;
-  margin-top: 20rpx;
-  margin-bottom: 20rpx;
-  overflow:hidden; 
-text-overflow:ellipsis; 
-white-space:nowrap; 
+  color:black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .prize-totalBet{
   color:#FF3E3E;
@@ -111,6 +117,7 @@ white-space:nowrap;
 .prize-info{
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   flex: 1;
 }
 .bet-box{
@@ -189,8 +196,8 @@ button{
   justify-content: center;
   background-color: #FF3E3E;
   color: white;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto; */
+  margin-right: 20rpx;
 }
 .refresh-btn{
   position: sticky;
