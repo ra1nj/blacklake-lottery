@@ -14,6 +14,7 @@ Component({
         }else{
           this.setData({
             left:0,
+            tip:'开奖中...',
           })
         }
       }
@@ -44,18 +45,18 @@ Component({
       this.triggerEvent('closeModel')
     },
     starAnimation() {
-      console.log('Animation start')
+      console.log('Animation start,' )
       let candidateList = this.properties.currentItem.candidateList;
       let winnerList = this.properties.currentItem.winnerList;
-      let winnerIndex
-      for(let index in candidateList){
-        let c = candidateList[index]
-        if(winnerList[0].id == c.id){
-          winnerIndex = index
-        }
-      }
-      let totalStep = Number(((this.data.round.length -1) * candidateList.length))+Number(winnerIndex)
-      console.log('winnder index',winnerIndex,' total step',totalStep)
+      // let winnerIndex
+      // for(let index in candidateList){
+      //   let c = candidateList[index]
+      //   if(winnerList[0].id == c.id){
+      //     winnerIndex = index
+      //   }
+      // }
+      let totalStep = Number(this.data.round.length  * candidateList.length)
+      // console.log('winnder index',winnerIndex,' total step',totalStep)
       let singleAvatarLength = 140;
       let totalLength = singleAvatarLength * totalStep;
       let singleMoveLength = totalLength / this.data.duration
@@ -69,7 +70,7 @@ Component({
         if (speed == 0 && timer != null) {
           clearInterval(timer)
           this.setData({
-            tip: `恭喜 ${winnerList[0].nickName} ${winnerList[1].nickName} 俩位同学中奖！`
+            tip: `恭喜 ${winnerList[0].name} ${winnerList[1].name} 俩位同学中奖！`
           })
         }
         left -= speed * singleMoveLength

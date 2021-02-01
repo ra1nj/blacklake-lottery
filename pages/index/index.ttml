@@ -21,7 +21,8 @@
         <view tt:for="{{prizes}}"  tt:for-item='prize' class="prize-box">
             <view class='prize-title' >
                 <image tt:if='{{prize.categotyName == 特等奖}}' class='fPrize-flower' src='../../assets/img/flower.png'></image>
-                {{prize.categoryName}}
+                {{prize.categoryName}} 
+                {{prize.prizeList.length * 2}}名
             </view>
             <view  tt:if='{{prize.categoryName == "特等奖"}}'>
                 <view  tt:for="{{prize.prizeList}}">

@@ -64,7 +64,7 @@
 
 .title{
   margin-top: 20rpx;
-  font-size: 68rpx; 
+  font-size: 50rpx; 
 }
 
 .tip{

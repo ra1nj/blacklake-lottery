@@ -148,6 +148,7 @@ Page({
   openPrize(event) {
     let prize = event.target.dataset['prize']
     loading()
+    var that = this
     tt.request({
       url: `${app.globalData.baseUrl}/lottery/lottery`,
       method: 'POST',
@@ -159,18 +160,30 @@ Page({
       },
       success(res) {
         console.log(`开奖 调用成功 ${res}`);
-        let winnerList = res.data.data
-
-        hideLoading()
+        if(res.data.code == 200){
+          hideLoading()
+          let winnerList = res.data.data[0].userList
+          let candidateList = prize.rewardTicketRelDtoList
+          let currentItem = {
+            ...prize,
+            winnerList:winnerList,
+            candidateList:candidateList,
+          }
+          that.setData({
+            currentItem: currentItem,
+            showDetail: true,
+          })  
+        }else{
+          tt.showToast({
+            title: JSON.stringify(res),
+          })
+        }
+       
       },
       fail(res) {
         console.log(`开奖 调用失败`);
         hideLoading()
       }
-    })
-    this.setData({
-      currentItem: prize,
-      showDetail: true,
     })
   },
   getPrizeList() {
